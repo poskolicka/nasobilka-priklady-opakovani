@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Násobení a dělení – procvičování</title>
+<style>
+  body {
+    font-family: "Comic Sans MS", Arial, sans-serif;
+    background: url("násobení a dělení.png") no-repeat center center fixed;
+    background-size: cover;
+
+    margin: 40px;
+    text-align: center;
+  }
+  h2 {
+    font-size: 1cm;              /* velikost nadpisu */
+    color: black;                  /* barva písma */
+    margin-bottom: 15px;
+    
+    background-color: #fff8dc;     /* vanilkově žlutá (Cornsilk) */
+    padding: 20px;                 /* vnitřní odsazení */
+    border-radius: 20px;           /* zaoblené rohy */
+    display: inline-block;         /* rámeček obepíná jen text */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* jemný stín */
+  }
+  #examples {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    max-width: 700px;
+    margin: 0 auto 20px auto;
+  }
+  .example {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    font-size: 22px;
+  }
+  input[type="number"] {
+    width: 70px;
+    padding: 5px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    margin-left: 8px;
+    -moz-appearance: textfield;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .correct {
+    border-color: #27ae60;
+    background-color: #d4f8d4;
+  }
+  .incorrect {
+    border-color: #c0392b;
+    background-color: #f8d4d4;
+  }
+  button {
+    padding: 12px 25px;
+    margin: 10px 5px 0 5px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    color: white;
+    background: #3498db;
+    transition: 0.3s;
+  }
+  button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+  }
+  button:hover:enabled {
+    background: #2980b9;
+  }
+</style>
+</head>
+<body>
+
+<h2>Procvičování násobení a dělení</h2>
+<div id="examples"></div>
+
+<button onclick="checkAnswers()">✅ Kontroluj</button>
+<button id="nextBtn" onclick="newExamples()" disabled>🔄 Další příklady</button>
+
+<script>
+let tasks = [];
+
+function generateExamples() {
+  tasks = [];
+  let html = "";
+  for (let i = 0; i < 10; i++) {
+    let a = Math.floor(Math.random() * 10) + 1;
+    let b = Math.floor(Math.random() * 10) + 1;
+    let isMultiplication = Math.random() < 0.5;
+
+    let question, result;
+    if (isMultiplication) {
+      question = `${a} × ${b}`;
+      result = a * b;
+    } else {
+      let product = a * b;
+      question = `${product} : ${a}`;
+      result = b;
+    }
+
+    tasks.push(result);
+    html += `<div class="example">${question} = 
+      <input type="number" id="ans${i}"></div>`;
+  }
+  document.getElementById("examples").innerHTML = html;
+  document.getElementById("nextBtn").disabled = true; // znovu zablokujeme
+}
+
+function checkAnswers() {
+  let allCorrect = true;
+  for (let i = 0; i < tasks.length; i++) {
+    let input = document.getElementById("ans" + i);
+    if (input.value == tasks[i]) {
+      input.classList.add("correct");
+      input.classList.remove("incorrect");
+    } else {
+      input.classList.add("incorrect");
+      input.classList.remove("correct");
+      allCorrect = false;
+    }
+  }
+  // povolíme tlačítko jen pokud je vše správně
+  document.getElementById("nextBtn").disabled = !allCorrect;
+}
+
+function newExamples() {
+  generateExamples();
+}
+
+generateExamples();
+</script>
+
+</body>
+</html>
